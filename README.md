@@ -1,2 +1,2 @@
-# js-vite
-Template Repository for Vanilla Javascript Web Apps using Vite
+# battleship
+ Implementation of the classic game Battleship 
