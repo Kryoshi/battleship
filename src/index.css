@@ -1,0 +1,84 @@
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande',
+    'Lucida Sans', Arial, sans-serif;
+  font-size: 16px;
+}
+
+:root {
+  --color-theme-main: #e5e5e560;
+  --color-theme-alt: #d6d3d180;
+  --color-theme-bg: #d6d3d1;
+  --color-theme-shadow: #a3a3a3;
+  --color-theme-border: #737373;
+  --color-theme-highlight: #22d3ee;
+  --color-theme-highlight-bg: #cffafe40;
+  --color-theme-focus: #334155;
+  --color-theme-focus-bg: #f3f4f6;
+
+  --color-theme-text-main: #09090b;
+  --color-theme-text-alt: #52525b;
+
+  --color-theme-positive: #86efac;
+  --color-theme-mixed: #f59e0b;
+  --color-theme-negative: #f87171;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+a {
+  margin: 0;
+  padding: 0;
+  color: inherit;
+}
+
+a {
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+button,
+input,
+textarea {
+  background-color: inherit;
+  color: inherit;
+  font: inherit;
+  appearance: none;
+  padding: 0;
+}
+
+button {
+  cursor: pointer;
+}
+
+input {
+  border: none;
+}
+
+input:focus {
+  outline: none;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
