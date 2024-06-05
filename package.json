@@ -1,6 +1,6 @@
 {
-  "name": "js-vite",
-  "description": "Template Repository for Vanilla Javascript Web Apps using Vite",
+  "name": "battleship",
+  "description": "Implementation of the classic game Battleship",
   "private": true,
   "version": "0.0.0",
   "type": "module",
