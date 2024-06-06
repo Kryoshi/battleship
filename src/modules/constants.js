@@ -1,1 +1,1 @@
-export const orientations = { row: 0, column: 1 };
+export const orientations = { row: 0, col: 1 };
