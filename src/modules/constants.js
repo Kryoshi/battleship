@@ -1,1 +1,1 @@
-export const directions = { horizontal: 0, vertical: 1 };
+export const orientations = { row: 0, column: 1 };

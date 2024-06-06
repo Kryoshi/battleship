@@ -1,4 +1,4 @@
-export class Coordinate2D {
+export class Coordinates2D {
   #row;
   #column;
 
