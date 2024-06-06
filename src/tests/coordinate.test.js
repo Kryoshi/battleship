@@ -5,8 +5,8 @@ describe('2D coordinate object', () => {
   it('has a row property', () => {
     expect(new Coordinates2D(0, 0)).toHaveProperty('row');
   });
-  it('has a column property', () => {
-    expect(new Coordinates2D(0, 0)).toHaveProperty('column');
+  it('has a col property', () => {
+    expect(new Coordinates2D(0, 0)).toHaveProperty('col');
   });
   it('throws error if missing arguments', () => {
     expect(() => new Coordinates2D()).toThrowError();

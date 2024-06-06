@@ -1,20 +1,20 @@
 export class Coordinates2D {
   #row;
-  #column;
+  #col;
 
-  constructor(row, column) {
-    if (!this.#isValid(row) || !this.#isValid(column))
+  constructor(row, col) {
+    if (!this.#isValid(row) || !this.#isValid(col))
       throw new Error('Invalid Coordinate');
     this.#row = row;
-    this.#column = column;
+    this.#col = col;
   }
 
   get row() {
     return this.#row;
   }
 
-  get column() {
-    return this.#column;
+  get col() {
+    return this.#col;
   }
 
   #isValid(coord) {
