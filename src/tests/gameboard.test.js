@@ -100,86 +100,134 @@ describe('Gameboard object', () => {
       expect(gameboard.place(ship1, coords)).toBe(true);
       expect(gameboard.place(ship2, coords)).toBe(false);
     });
-    describe.skip('cannot place two ships at overlapping coordinates', () => {
+    describe('cannot place two ships at overlapping coordinates', () => {
       it('placed horizontally', () => {
-        const gameboard = new Gameboard();
+        const size = 10;
 
-        const ship1 = new Ship(5);
-        const ship2 = new Ship(5);
-        const coords1 = new Coords2D(0, 0);
-        const coords2 = new Coords2D(1, 0);
-        const bearing = orientations.row;
+        const gameboard = new Gameboard(size);
+        for (let row = 0; row < size; ++row) {
+          const ship1 = new Ship(5);
+          const col = 0;
+          const onEachRow = new Coords2D(row, col);
 
-        expect(gameboard.place(ship1, coords1, bearing)).toBe(true);
-        expect(gameboard.place(ship2, coords2, bearing)).toBe(false);
+          expect(gameboard.place(ship1, onEachRow, orientations.row)).toBe(
+            true,
+          );
+
+          for (let i = 0; i < ship1.length; ++i) {
+            const ship2 = new Ship(5);
+            const overlappingCoords = new Coords2D(row, col + i);
+            expect(
+              gameboard.place(ship2, overlappingCoords, orientations.row),
+            ).toBe(false);
+          }
+        }
       });
       it('placed vertically', () => {
-        const gameboard = new Gameboard();
+        const size = 10;
 
-        const ship1 = new Ship(5);
-        const ship2 = new Ship(5);
-        const coords1 = new Coords2D(0, 0);
-        const coords2 = new Coords2D(0, 1);
-        const bearing = orientations.col;
+        const gameboard = new Gameboard(size);
+        for (let col = 0; col < size; ++col) {
+          const ship1 = new Ship(5);
+          const row = 0;
+          const onEachCol = new Coords2D(row, col);
 
-        expect(gameboard.place(ship1, coords1, bearing)).toBe(true);
-        expect(gameboard.place(ship2, coords2, bearing)).toBe(false);
+          expect(gameboard.place(ship1, onEachCol, orientations.col)).toBe(
+            true,
+          );
+
+          for (let i = 0; i < ship1.length; ++i) {
+            const ship2 = new Ship(5);
+            const overlappingCoords = new Coords2D(row + i, col);
+            expect(
+              gameboard.place(ship2, overlappingCoords, orientations.col),
+            ).toBe(false);
+          }
+        }
       });
       it('placed in perpendicular', () => {
-        const gameboard = new Gameboard();
+        const size = 10;
 
-        const ship1 = new Ship(5);
-        const ship2 = new Ship(5);
-        const coords1 = new Coords2D(0, 0);
-        const coords2 = new Coords2D(0, 1);
-        const bearing1 = orientations.row;
-        const bearing2 = orientations.col;
+        for (let row = 0; row < size; ++row) {
+          const gameboard = new Gameboard(size);
+          const ship1 = new Ship(5);
+          const col = 0;
+          const onEachRow = new Coords2D(row, col);
 
-        expect(gameboard.place(ship1, coords1, bearing1)).toBe(true);
-        expect(gameboard.place(ship2, coords2, bearing2)).toBe(false);
+          expect(gameboard.place(ship1, onEachRow, orientations.row)).toBe(
+            true,
+          );
+
+          for (let i = 0; i < ship1.length; ++i) {
+            const ship2 = new Ship(5);
+            for (let j = 0; j < ship2.length; ++j) {
+              const clampedRow = row - j > 0 ? row - j : row;
+              const overlappingCoords = new Coords2D(clampedRow, col + i);
+              expect(
+                gameboard.place(ship2, overlappingCoords, orientations.col),
+              ).toBe(false);
+            }
+          }
+        }
+        for (let col = 0; col < size; ++col) {
+          const gameboard = new Gameboard(size);
+          const ship1 = new Ship(5);
+          const row = 0;
+          const onEachCol = new Coords2D(row, col);
+
+          expect(gameboard.place(ship1, onEachCol, orientations.col)).toBe(
+            true,
+          );
+
+          for (let i = 0; i < ship1.length; ++i) {
+            const ship2 = new Ship(5);
+            for (let j = 0; j < ship2.length; ++j) {
+              const clampedCol = col - j > 0 ? col - j : col;
+              const overlappingCoords = new Coords2D(row + i, clampedCol);
+              expect(
+                gameboard.place(ship2, overlappingCoords, orientations.row),
+              ).toBe(false);
+            }
+          }
+        }
       });
     });
-    describe.skip('can place two ships at different coordinates', () => {
-      it('placed horizontally', () => {
-        const gameboard = new Gameboard();
+    it('can place ships at different coordinates', () => {
+      const size = 10;
 
+      const gameboard1 = new Gameboard(size);
+      const gameboard2 = new Gameboard(size);
+      for (let i = 0; i < size; ++i) {
         const ship1 = new Ship(5);
         const ship2 = new Ship(5);
-        const coords1 = new Coords2D(0, 0);
-        const coords2 = new Coords2D(0, 0);
+        const onEachRow = new Coords2D(i, 0);
+        const onEachCol = new Coords2D(0, i);
 
-        expect(gameboard.place(ship1, coords1)).toBe(true);
-        expect(gameboard.place(ship2, coords2)).toBe(true);
-      });
-      it('placed vertically', () => {
-        const gameboard = new Gameboard();
-
-        const ship1 = new Ship(5);
-        const ship2 = new Ship(5);
-        const coords1 = new Coords2D(0, 0);
-        const coords2 = new Coords2D(0, 0);
-
-        expect(gameboard.place(ship1, coords1)).toBe(true);
-        expect(gameboard.place(ship2, coords2)).toBe(true);
-      });
+        expect(gameboard1.place(ship1, onEachRow, orientations.row)).toBe(true);
+        expect(gameboard2.place(ship2, onEachCol, orientations.col)).toBe(true);
+      }
     });
   });
 
-  /*   it('has a function to receive attacks', () => {
+  it('has a function to receive attacks', () => {
+    expect(new Gameboard()).toHaveProperty('attack');
     expect(new Gameboard().attack).toEqual(expect.any(Function));
-  }); */
-  /* it('can trigger a hit on a ship given the coordinate it was placed at', () => {
-    const gameboard = new Gameboard();
+  });
+  it('can trigger a hit on a ship given the coordinate it was placed at', () => {
+    const size = 10;
+    const length = 5;
 
-    const length = 2;
-    const ship = new Ship(length);
-    const coords = new Coordinate2D(0, 0);
+    const gameboard = new Gameboard(size);
+    for (let i = 0; i < size; ++i) {
+      const ship = new Ship(length);
+      const coords = new Coords2D(i, 0);
 
-    expect(ship.hitPoints).toBe(length);
+      expect(ship.hitPoints).toBe(length);
 
-    gameboard.place(ship, coords);
-    expect(gameboard.attack(coords)).toBe(true);
+      gameboard.place(ship, coords);
+      expect(gameboard.attack(coords)).toBe(true);
 
-    expect(ship.hitPoints).toBe(length - 1);
-  }); */
+      expect(ship.hitPoints).toBe(length - 1);
+    }
+  });
 });
