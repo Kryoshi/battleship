@@ -4,10 +4,12 @@ import { orientations } from '../modules/constants';
 export class Gameboard {
   #width;
   #height;
+  #ships;
 
   constructor(width = 10, height) {
     this.#width = width;
     this.#height = height ? height : width;
+    this.#ships = [];
   }
 
   get width() {
@@ -29,6 +31,17 @@ export class Gameboard {
     ) {
       return false;
     }
+    for (const placedShip of this.#ships) {
+      if (
+        placedShip.ship === ship ||
+        (placedShip.coords.row === coords.row &&
+          placedShip.coords.col === coords.col)
+      ) {
+        return false;
+      }
+    }
+
+    this.#ships.push({ ship, coords });
     return true;
   }
 
