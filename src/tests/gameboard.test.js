@@ -213,7 +213,7 @@ describe('Gameboard object', () => {
     expect(new Gameboard()).toHaveProperty('attack');
     expect(new Gameboard().attack).toEqual(expect.any(Function));
   });
-  it('can trigger a hit on a ship given the coordinate it was placed at', () => {
+  it('can land a hit on a ship given the coordinate it was placed at', () => {
     const size = 10;
     const length = 5;
 
@@ -225,9 +225,49 @@ describe('Gameboard object', () => {
       expect(ship.hitPoints).toBe(length);
 
       gameboard.place(ship, coords);
-      expect(gameboard.attack(coords)).toBe(true);
+      gameboard.attack(coords);
 
       expect(ship.hitPoints).toBe(length - 1);
     }
   });
+  it('can land a hit on a ship given any of the coordinates of its length', () => {
+    const size = 10;
+    const length = 5;
+
+    const gameboard = new Gameboard(size);
+    for (let i = 0; i < size; ++i) {
+      const ship = new Ship(length);
+      const coords = new Coords2D(i, 0);
+
+      expect(ship.hitPoints).toBe(length);
+
+      gameboard.place(ship, coords);
+      for (let i = 0; i < length; ++i) {
+        const attackCoords = new Coords2D(coords.row, coords.col + i);
+        gameboard.attack(attackCoords);
+        expect(ship.hitPoints).toBe(length - 1 - i);
+      }
+    }
+  });
+  it('cannot land a hit on the same coordinates twice', () => {
+    const size = 10;
+    const length = 5;
+
+    const gameboard = new Gameboard(size);
+    for (let i = 0; i < size; ++i) {
+      const ship = new Ship(length);
+      const coords = new Coords2D(i, 0);
+
+      expect(ship.hitPoints).toBe(length);
+
+      gameboard.place(ship, coords);
+
+      for (let i = 0; i < length; ++i) {
+        gameboard.attack(coords);
+        expect(ship.hitPoints).toBe(length - 1);
+      }
+    }
+  });
+  it.skip('cannot land hits outside the board', () => {});
+  it.skip('can display the number of sunk ships', () => {});
 });

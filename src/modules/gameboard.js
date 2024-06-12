@@ -7,16 +7,20 @@ export class Gameboard {
   #height;
   #ships;
   #grid;
+  #hits;
 
   constructor(width = 10, height) {
     this.#width = width;
     this.#height = height ? height : width;
     this.#ships = [];
     this.#grid = [];
+    this.#hits = [];
     for (let row = 0; row < this.#height; ++row) {
       this.#grid[row] = [];
+      this.#hits[row] = [];
       for (let col = 0; col < this.#width; ++col) {
         this.#grid[row][col] = null;
+        this.#hits[row][col] = null;
       }
     }
   }
@@ -45,6 +49,7 @@ export class Gameboard {
     for (const coords of gridCoords) {
       this.#grid[coords.row][coords.col] = ship;
     }
+
     for (const placedShip of this.#ships) {
       if (placedShip === ship) return false;
     }
@@ -53,8 +58,10 @@ export class Gameboard {
     return true;
   }
 
-  attack() {
-    this.#ships[0].hit();
-    return true;
+  attack(coords) {
+    if (!this.#hits[coords.row][coords.col]) {
+      this.#grid[coords.row][coords.col].hit();
+    }
+    this.#hits[coords.row][coords.col] = true;
   }
 }
