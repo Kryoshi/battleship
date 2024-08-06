@@ -3,8 +3,15 @@ export class Coordinates2D {
   #col;
 
   constructor(row, col) {
-    if (!this.#isValid(row) || !this.#isValid(col))
-      throw new Error('Invalid Coordinate');
+    if (!this.#isValid(row) && !this.#isValid(col)) {
+      throw new Error(`Invalid Coordinate: Row: ${row} & Col: ${col}`);
+    }
+    if (!this.#isValid(row)) {
+      throw new Error(`Invalid Coordinate: Row: ${row}`);
+    }
+    if (!this.#isValid(col)) {
+      throw new Error(`Invalid Coordinate: Col: ${col}`);
+    }
     this.#row = row;
     this.#col = col;
   }
