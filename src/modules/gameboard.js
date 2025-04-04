@@ -8,6 +8,7 @@ export class Gameboard {
   #ships;
   #grid;
   #hits;
+  #unhit;
 
   constructor(width = 10, height) {
     this.#width = width;
@@ -15,12 +16,15 @@ export class Gameboard {
     this.#ships = [];
     this.#grid = [];
     this.#hits = [];
+    this.#unhit = [];
     for (let row = 0; row < this.#height; ++row) {
       this.#grid[row] = [];
       this.#hits[row] = [];
       for (let col = 0; col < this.#width; ++col) {
         this.#grid[row][col] = null;
         this.#hits[row][col] = null;
+
+        this.#unhit.push(new Coordinates2D(row, col));
       }
     }
   }
@@ -31,6 +35,10 @@ export class Gameboard {
 
   get height() {
     return this.#height;
+  }
+
+  get unhit() {
+    return this.#unhit;
   }
 
   place(ship, coords, orientation = orientations.row) {
@@ -59,9 +67,30 @@ export class Gameboard {
   }
 
   attack(coords) {
-    if (!this.#hits[coords.row][coords.col]) {
-      this.#grid[coords.row][coords.col].hit();
+    if (coords.row >= this.#height || coords.col >= this.#width) {
+      throw new Error(
+        `Coordinate outside gameboard: [${coords.row}, ${coords.col}]`,
+      );
     }
+
+    if (!this.#hits[coords.row][coords.col]) {
+      if (this.#grid[coords.row][coords.col])
+        this.#grid[coords.row][coords.col].hit();
+    }
+
     this.#hits[coords.row][coords.col] = true;
+
+    for (const index in this.#unhit) {
+      const unhitCoords = this.#unhit[index];
+      if (unhitCoords.row == coords.row && unhitCoords.col == coords.col) {
+        this.#unhit.splice(index, 1);
+        break;
+      }
+    }
+  }
+
+  checkHit(coords) {
+    if (this.#hits[coords.row][coords.col]) return true;
+    return false;
   }
 }
